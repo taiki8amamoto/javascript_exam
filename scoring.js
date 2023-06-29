@@ -21,6 +21,9 @@ $(document).ready(function () {
     // 「平均点：」に各教科の平均点を出力する処理を記述する。
     // ヒント：変数「average」に平均値を出して代入しましょう(平均をとりたい数の合計点数(sum) / 全体の個数)
     // ヒント：全体の個数はlengthメソッドを使って求めます。(lengthメソッド: 文字列の長さや配列の要素数などを取得するメソッド)
+    let average = sum / subject_points.length;
+    $("#average_indicate").text(average);
+
   };
   // 平均点数を取得し、取得した平均点数から「A、B、C、D」にランク分けするロジックを記述する。
   function get_achievement() {
@@ -33,8 +36,16 @@ $(document).ready(function () {
       return "A";
     }
     // もし「averageIndicate」が60以上なら"B"を返します。
+    else if (averageIndicate >= 60) {
+      return "B";
+    }
     // もし「averageIndicate」が40以上なら"C"を返します。
+    else if (averageIndicate >= 40) {
+      return "C";
+    }
     // もし「averageIndicate」がそれ以外なら"D"を返します。
+    else
+      return "D";
   };
   // 各教科の点数を取得し、取得した点数から「合格、不合格」の判断を下すロジックを作ります。
   function get_pass_or_failure() {
@@ -50,7 +61,12 @@ $(document).ready(function () {
     let judge = "合格";
     // 入力したそれぞれの教科のうち、1つでも60点よりも低い点数があった場合、変数「judge」に"不合格"を再代入する処理を記述する。
     // ヒント：配列の繰り返し処理について調べてみましょう。
-    return judge;
+    for(let i=0; i<number; i++)
+      if (subject_points[i] < 60){
+        judge = "不合格";
+        break;
+      };
+        return judge;
   };
   // 最終的なジャッジのロジックを作ります。
   function judgement() {
@@ -77,6 +93,11 @@ $(document).ready(function () {
   // ２回目以降に「最終ジャッジ」ボタンを押した際は、それまでに表示していたジャッジのHTML要素を削除して、新たなジャッジのHTML要素を追加する。
   // ヒント：removeメソッドについて調べてみましょう。
   $('#btn-declaration').click(function () {
+    if (judgement == "")
+      $('#declaration').text(judgement());
+    else
+      $('#alert-indicate').remove();
+      $('#declaration').text(judgement());
   });
 });
 
